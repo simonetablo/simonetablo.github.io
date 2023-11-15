@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .grid-container {
+            height: 91.3vh;
+            position: relative;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            grid-row: 1;
+            grid-column: span 2;
+            height: 7vh;
+        }
+
+        .portion {
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .resizable-rectangle {
+            width: 49%;
+            height: 24%;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute
+        }
+
+        #score_resizable-rectangle {
+            width: 80%;
+            height: 80%;
+        }
+
+        #histogram_resizable-rectangle {
+            width: 20%;
+            height: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="input-container">
+        <label for="M">Enter M (Integer):</label>
+        <input type="number" id="M" name="M" min="1" step="1" required>
+        <label for="N">Enter N (Integer):</label>
+        <input type="number" id="N" name="N" min="1" step="1" required>
+        <label for="p">Enter p (Decimal between 0 and 1):</label>
+        <input type="number" id="p" name="p" min="0" max="1" step="0.01" required>
+        <label for="p">Enter S (Integer):</label>
+        <input type="number" id="S" name="S" min="1" max="1000" step="1" required>
+        <button type="button" onclick="Main()">Attack!</button>
+    </div>
+    <div  class="grid-container" id="gridContainer">
+    </div>
+
+    <script type="text/javascript" src="./Chart.js"></script>
+    <script type="text/javascript" src="./chartjs-plugin-colorschemes.js"></script>
+    <script type="text/javascript" src="./attack.js"></script>
+    <script type="text/javascript" src="./objectChart.js"></script>
+    <script type="text/javascript" src="./objectHistogram.js"></script>
+    <script type="text/javascript" src="./resizableRectangle.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
+</body>
+</html>
