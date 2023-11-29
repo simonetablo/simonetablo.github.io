@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .grid-container {
+            height: 91.3vh;
+            position: relative;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            grid-row: 1;
+            grid-column: span 2;
+            height: 7vh;
+        }
+
+        .input{
+            display: flex;
+            flex-flow: column wrap;
+        }
+
+        .portion {
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .resizable-rectangle {
+            width: 49%;
+            height: 24%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute
+        }
+
+        #chart_Chart {
+            border: 1px solid #000;
+        }
+
+        #chart_resizable-rectangle {
+            width: 80%;
+            height: 60%;
+        }
+
+        #histogram_2_resizable-rectangle {
+            padding-top: 0.5%;
+            width: 20%;
+            height: 58%;
+        }
+
+        #histogram_1_resizable-rectangle {
+            padding-top: 0.5%;
+            width: 20%;
+            height: 58%;
+        }
+    </style>
+</head>
+<body>
+    <div class="input-container" id="input-container">
+        <div class="input" id="systems-div">
+            <label for="M">Systems:</label>
+            <input type="number" id="M" name="M" min="1" step="1" value="1000" required>
+        </div>
+        <div class="input" id="attacks-div">        
+            <label for="N">Attacks:</label>
+            <input type="number" id="N" name="N" min="1" step="1" value="100" required>
+        </div>
+        <div class="input" id="drift-div">
+            <label for="drift" id="drift-label">Drift:</label>
+            <input type="number" id="drift" name="drift" min="1" step="1" value="1" required>
+        </div>
+        <div class="input" id="volatility-div">
+            <label for="volatility">Volatility:</label>
+            <input type="number" id="volatility" name="volatility" min="1" step="1" value="0.05" required>
+        </div>
+        <div class="input" id="mean-div">
+            <label for="mean" id="mean-label">Long Term Mean:</label>
+            <input type="number" id="mean" name="mean" min="1" step="1" value="1" required>
+        </div>
+        <div class="input" id="lambda-div">
+            <label for="lambda" id="lambda-label">Rate of event occurrences:</label>
+            <input type="number" id="lambda" name="lambda" min="0" step="1" value="30" required>
+        </div>
+        <div class="input" id="theta-div">
+            <label for="theta" id="theta-label">Mean-reversion rate:</label>
+            <input type="number" id="theta" name="theta" min="0" step="0.1" value="0.1" required>
+        </div>
+        <div class="input" id="tdTheta-div">
+            <label for="tdTheta" id="tdTheta-label">Time-dependent MrR:</label>
+            <input type="number" id="tdTheta" name="tdTheta" min="0" step="0.1" value="0.03" required>
+        </div>
+        <div class="input" id="parameter-div">
+            <label for="parameter" id="parameter-label">Parameter:</label>
+            <input type="number" id="parameter"  name="parameter" min="0" step="0.1" value="0.5" required>
+        </div>
+        <div class="input">
+            <label for="process">Choose a process:</label>
+            <select id="process", name="process", onchange="changeValue()">
+                <option value="None">Choose a process</option>
+                <option value="Arithmetic_Brownian">Arithmetic Brownian</option>
+                <option value="Geometric_Brownian">Geometric Brownian</option>
+                <option value="Ornstein-Uhlenbeck">Ornstein-Uhlenbeck</option>
+                <option value="Vasicek">Vasicek</option>
+                <option value="Hull-White">Hull-White</option>
+                <option value="Cox-Ingersoll-Ross">Cox-Ingersoll-Ross</option>
+                <option value="Black-Karasinski">Black-Karasinski</option>
+                <option value="Poisson">Poisson</option>
+            </select>
+        </div>
+        <button type="button" onclick="Main()">Attack!</button>
+    </div>
+    <div  class="grid-container" id="gridContainer">
+    </div>
+
+    <script type="text/javascript" src="./Chart.js"></script>
+    <script type="text/javascript" src="./chartjs-plugin-colorschemes.js"></script>
+    <script type="text/javascript" src="./attack.js"></script>
+    <script type="text/javascript" src="./simulation.js"></script>
+    <script type="text/javascript" src="./objectChart.js"></script>
+    <script type="text/javascript" src="./objectHistogram.js"></script>
+    <script type="text/javascript" src="./resizableRectangle.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
+    <script>
+    function changeValue(){
+        let process=document.getElementById("process").value;
+        let theta=document.getElementById("theta-div");
+        let drift=document.getElementById("drift-div");
+        let mean=document.getElementById("mean-div");
+        let volatility=document.getElementById("volatility-div");
+        let parameter=document.getElementById("parameter-div");
+        let tdTheta=document.getElementById("tdTheta-div");
+        let lambda=document.getElementById("lambda-div")
+        theta.style.display="flex";
+        drift.style.display="flex";
+        mean.style.display="flex";
+        volatility.style.display="flex";
+        parameter.style.display="flex";
+        tdTheta.style.display="flex";
+        lambda.style.display="flex";
+        switch(process){
+            case "Arithmetic_Brownian":
+                theta.style.display="none";
+                tdTheta.style.display="none";
+                parameter.style.display="none";
+                mean.style.display="none";
+                lambda.style.display="none";
+                break;
+            case "Geometric_Brownian":
+                theta.style.display="none";
+                tdTheta.style.display="none";
+                parameter.style.display="none";
+                mean.style.display="none";
+                lambda.style.display="none";
+                break;
+            case "Ornstein-Uhlenbeck":
+                drift.style.display="none";
+                tdTheta.style.display="none";
+                parameter.style.display="none";
+                lambda.style.display="none";
+                break;
+            case "Vasicek":
+                drift.style.display="none";
+                tdTheta.style.display="none";
+                parameter.style.display="none";
+                lambda.style.display="none";
+                break;
+            case "Hull-White":
+                drift.style.display="none";
+                mean.style.display="none";
+                parameter.style.display="none";
+                lambda.style.display="none";
+                break;
+            case "Cox-Ingersoll-Ross":
+                drift.style.display="none";
+                tdTheta.style.display="none";
+                parameter.style.display="none";
+                lambda.style.display="none";
+                break;
+            case "Black-Karasinski":
+                drift.style.display="none";
+                mean.style.display="none";
+                lambda.style.display="none";
+                break;
+            case "Poisson":
+                theta.style.display="none";
+                tdTheta.style.display="none";
+                parameter.style.display="none";
+                mean.style.display="none";
+                drift.style.display="none";
+                theta.style.display="none";
+                volatility.style.display="none";
+                break;
+            default:
+                break;
+    }
+}
+    </script>
+
+</body>
+</html>
